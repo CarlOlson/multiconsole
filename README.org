@@ -1,0 +1,7 @@
+* About
+Control multiple consoles from a ruby program.
+* Limitations
+This currently only supports Windows.
+* Ocra
+To use this with ocra, compile `./example/socket_cmd.rb'. Include
+`socket_cmd.exe' in the directory of your compiled ruby executable.
