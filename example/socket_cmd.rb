@@ -5,7 +5,4 @@ require 'multiconsole'
 
 exit if defined? Ocra
 
-begin
-  Console::Daemon.new ARGV.first.to_i
-rescue EOFError => e
-end
+Console::Daemon.new ARGV.first.to_i rescue nil
