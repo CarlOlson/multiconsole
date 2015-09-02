@@ -8,7 +8,7 @@ module Console
   
   class Controller
     SCRIPT =
-      "require %q[multiconsole]; Console::Daemon.new ARGV.first"
+      "require %q[multiconsole]; Console::Daemon.new ARGV.first rescue nil"
 
     extend Forwardable
     def_delegators( :@client, :puts, :print, :gets, :flush,
@@ -43,7 +43,7 @@ module Console
   class Daemon
     def initialize port
       while @socket.nil?
-        @socket = TCPSocket.new 'localhost', port.to_i
+        @socket = TCPSocket.new 'localhost', port.to_i rescue nil
         sleep WAIT
       end
       
