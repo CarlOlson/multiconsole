@@ -21,6 +21,7 @@ module Console
       if ENV['OCRA_EXECUTABLE']
         system 'start', 'socket_cmd.exe', port
       elsif not (/cygwin|mswin|mingw|bccwin|wince|emx|windows/ =~ RUBY_PLATFORM).nil?
+        $stdout.puts "ruby -e '#{SCRIPT}' #{port}" if $DEBUG
         system 'start', 'cmd', '/c', "ruby -e '#{SCRIPT}' #{port}"
       else
         raise StandardError, "Platform #{RUBY_PLATFORM} not currently supported."
