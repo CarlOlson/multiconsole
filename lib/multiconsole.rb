@@ -46,7 +46,13 @@ module Console
         @socket = TCPSocket.new 'localhost', port.to_i rescue nil
         sleep WAIT
       end
-      
+
+      Thread.new do
+        while line = $stdin.gets
+          @socket.puts line
+        end
+      end
+
       while data = @socket.sysread(1024)
         print data
       end
