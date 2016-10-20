@@ -18,11 +18,15 @@ module Console
       port = port.to_i.to_s
       @server = TCPServer.new port
       t = Thread.new { connect }
+      cmd = "ruby -e '#{SCRIPT}' #{port}"
+
       if ENV['OCRA_EXECUTABLE']
         system 'start', 'socket_cmd.exe', port
-      elsif not (/cygwin|mswin|mingw|bccwin|wince|emx|windows/ =~ RUBY_PLATFORM).nil?
+      elsif /cygwin|mswin|mingw|bccwin|wince|emx|windows/ =~ RUBY_PLATFORM
         $stdout.puts "ruby -e '#{SCRIPT}' #{port}" if $DEBUG
-        system 'start', 'cmd', '/c', "ruby -e '#{SCRIPT}' #{port}"
+        system 'start', 'cmd', '/c', cmd
+      elsif konsole_exist?
+        system "konsole -e \"#{cmd}\" 2>/dev/null"
       else
         raise StandardError, "Platform #{RUBY_PLATFORM} not currently supported."
       end
@@ -37,6 +41,10 @@ module Console
     private
     def connect
       @client = @server.accept
+    end
+
+    def konsole_exist?
+      `konsole --version 2>&1`
     end
   end
 
